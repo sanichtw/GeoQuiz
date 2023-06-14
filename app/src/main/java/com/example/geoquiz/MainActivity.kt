@@ -2,6 +2,7 @@ package com.example.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
@@ -84,5 +85,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         Toast.makeText(this@MainActivity, messageResId, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }
