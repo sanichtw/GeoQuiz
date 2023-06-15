@@ -1,12 +1,12 @@
 package com.example.geoquiz
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.geoquiz.model.Question
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_asia, true)
     )
     private var currentIndex = 0
+    private var userRightAnswers = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +41,16 @@ class MainActivity : AppCompatActivity() {
 
         updateQuestion()
 
+
+
         trueButton.setOnClickListener {
             checkAnswer(true)
+            updateButtonsState(false)
         }
         falseButton.setOnClickListener {
             checkAnswer(false)
+            updateButtonsState(false)
+
         }
         nextButton.setOnClickListener {
             nextQuestion()
@@ -93,8 +99,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun nextQuestion() {
-        currentIndex = (currentIndex + 1) % questionBank.size
-        updateQuestion()
+        if ((currentIndex + 1) >= questionBank.size) {
+            Toast.makeText(
+                this@MainActivity,
+                "The game has been ended. Your result is ${showResult()}",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        } else {
+            currentIndex = (currentIndex + 1) % questionBank.size
+
+            updateQuestion()
+            updateButtonsState(true)
+        }
     }
 
     private fun prevQuestion() {
@@ -105,18 +122,32 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
+        updateButtonsState(true)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
+        var messageResId: Int
 
-        val messageResId = if (correctAnswer == userAnswer) {
-            R.string.correct_toast
+        if (correctAnswer == userAnswer) {
+            messageResId = R.string.correct_toast
+            userRightAnswers += 1
         } else {
-            R.string.incorrect_toast
+            messageResId = R.string.incorrect_toast
+            userRightAnswers -= 1
         }
 
         Toast.makeText(this@MainActivity, messageResId, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateButtonsState(state: Boolean) {
+        trueButton.isEnabled = state
+        falseButton.isEnabled = state
+    }
+
+    private fun showResult(): Int {
+        Log.d("Result", "user right answers: ${userRightAnswers}, count of size: ${questionBank.size}")
+        return (userRightAnswers / questionBank.size) * 100
     }
 
     companion object {
