@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         if ((currentIndex + 1) >= questionBank.size) {
             Toast.makeText(
                 this@MainActivity,
-                "The game has been ended. Your result is ${showResult()}",
+                "The game has been ended. Your result is ${showResult()}%",
                 Toast.LENGTH_SHORT
             )
                 .show()
@@ -134,7 +134,6 @@ class MainActivity : AppCompatActivity() {
             userRightAnswers += 1
         } else {
             messageResId = R.string.incorrect_toast
-            userRightAnswers -= 1
         }
 
         Toast.makeText(this@MainActivity, messageResId, Toast.LENGTH_SHORT).show()
@@ -145,9 +144,9 @@ class MainActivity : AppCompatActivity() {
         falseButton.isEnabled = state
     }
 
-    private fun showResult(): Int {
-        Log.d("Result", "user right answers: ${userRightAnswers}, count of size: ${questionBank.size}")
-        return (userRightAnswers / questionBank.size) * 100
+    private fun showResult(): Double {
+        var result = Math.floor((userRightAnswers.toFloat() / questionBank.size.toFloat() * 100).toDouble())
+        return result
     }
 
     companion object {
