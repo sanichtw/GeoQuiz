@@ -145,8 +145,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showResult(): Double {
-        var result = Math.floor((userRightAnswers.toFloat() / questionBank.size.toFloat() * 100).toDouble())
-        return result
+        return Math.floor((userRightAnswers.toFloat() / questionBank.size.toFloat() * 100).toDouble())
     }
 
     companion object {
