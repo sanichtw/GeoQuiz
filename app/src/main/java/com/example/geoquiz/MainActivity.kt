@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
     private lateinit var questionTextView: TextView
+    private lateinit var cheatButton: Button
 
     private var userRightAnswers = 0
 
@@ -41,10 +43,17 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         prevButton = findViewById(R.id.prev_button)
         questionTextView = findViewById(R.id.question_text_view)
+        cheatButton = findViewById(R.id.cheat_button)
 
         updateQuestionText()
         getBtnsState()
 
+
+        cheatButton.setOnClickListener {
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            startActivityForResult(intent, REQUEST_CODE_CHEAT)
+        }
         trueButton.setOnClickListener {
             checkAnswer(true)
             updateBtnsState(false)
@@ -105,5 +114,6 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val TAG = "Test"
         private const val KEY_INDEX = "index"
+        private const val REQUEST_CODE_CHEAT = 0
     }
 }
