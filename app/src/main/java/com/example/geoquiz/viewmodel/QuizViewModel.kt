@@ -16,6 +16,7 @@ class QuizViewModel : ViewModel() {
     )
     var currentIndex = 0
     private var buttonsState = true
+    var isCheater = false
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer

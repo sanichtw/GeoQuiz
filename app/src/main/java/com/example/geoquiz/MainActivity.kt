@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -78,6 +79,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+        }
+    }
+
     private fun updateQuestionText() {
         val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
@@ -85,14 +98,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
-        val messageResId: Int
 
-        if (correctAnswer == userAnswer) {
-            messageResId = R.string.correct_toast
-            userRightAnswers += 1
-        } else {
-            messageResId = R.string.incorrect_toast
+        val messageResId = when {
+            quizViewModel.isCheater -> R.string.judgment_toast
+            userAnswer == correctAnswer -> R.string.correct_toast
+            else -> R.string.incorrect_toast
         }
+
+//        if (correctAnswer == userAnswer) {
+//            messageResId = R.string.correct_toast
+//            userRightAnswers += 1
+//        } else {
+//            messageResId = R.string.incorrect_toast
+//        }
 
         Toast.makeText(this@MainActivity, messageResId, Toast.LENGTH_SHORT).show()
     }
@@ -115,5 +133,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "Test"
         private const val KEY_INDEX = "index"
         private const val REQUEST_CODE_CHEAT = 0
+        private const val EXTRA_ANSWER_SHOWN = "com.exaple.geoquiz.answer_shown"
+
     }
 }
