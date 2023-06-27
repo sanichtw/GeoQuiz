@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "Test"
         private const val KEY_INDEX = "index"
         private const val REQUEST_CODE_CHEAT = 0
-        private const val EXTRA_ANSWER_SHOWN = "com.exaple.geoquiz.answer_shown"
+        private const val EXTRA_ANSWER_SHOWN = "com.example.geoquiz.answer_shown"
 
     }
 }

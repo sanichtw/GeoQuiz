@@ -1,4 +1,8 @@
 package com.example.geoquiz.viewmodel
 
-class CheatActivityViewModel {
+import androidx.lifecycle.ViewModel
+
+class CheatActivityViewModel: ViewModel() {
+    var answerIsShown = false
+    var answerIsTrue: Int = 0
 }
